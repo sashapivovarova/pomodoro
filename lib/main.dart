@@ -19,11 +19,11 @@ class _AppState extends State<App> {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-          backgroundColor: const Color(0xfff8887e),
+          backgroundColor: const Color(0xfff88987),
         ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
-            color: Color(0xffe0acce),
+            color: Color(0xff4b2238),
           ),
         ),
         cardColor: const Color(
