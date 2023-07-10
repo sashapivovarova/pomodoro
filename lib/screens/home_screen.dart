@@ -9,14 +9,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int totalSeconds = 1500;
+  static const twentyFiveMinuates = 1500;
+  int totalSeconds = twentyFiveMinuates;
   bool isRunning = false;
+  bool isPushed = false;
+  int totalPomodoros = 0;
   late Timer timer;
 
   void onTick(Timer timer) {
-    setState(() {
-      totalSeconds = totalSeconds - 1;
-    });
+    if (totalSeconds == 0) {
+      setState(() {
+        totalPomodoros = totalPomodoros + 1;
+        isRunning = false;
+        totalSeconds = twentyFiveMinuates;
+      });
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds = totalSeconds - 1;
+      });
+    }
   }
 
   void onStartPressed() {
@@ -33,6 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  String format(int seconds) {
+    var duration = Duration(seconds: seconds);
+    return duration.toString().split('.').first.substring(2, 7);
+  }
+
+  void reset() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+      totalPomodoros = 0;
+      totalSeconds = twentyFiveMinuates;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                '$totalSeconds',
+                format(totalSeconds),
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 100,
@@ -54,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: Center(
               child: IconButton(
                 iconSize: 120,
@@ -70,14 +96,30 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Flexible(
             flex: 1,
+            child: Center(
+              child: TextButton(
+                onPressed: reset,
+                child: Text(
+                  'Reset the timer',
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.displayLarge!.color,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 1,
             child: Row(
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(
-                        50,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(50),
                       ),
                     ),
                     child: Column(
@@ -93,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          '0',
+                          '$totalPomodoros',
                           style: TextStyle(
                             color:
                                 Theme.of(context).textTheme.displayLarge!.color,
