@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:pomodoro/screens/settings.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -66,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Container(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.center,
               child: Text(
                 format(totalSeconds),
                 style: TextStyle(
@@ -80,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Flexible(
-            flex: 2,
+            flex: 1,
             child: Center(
               child: IconButton(
                 iconSize: 120,
@@ -90,22 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   isRunning
                       ? Icons.pause_circle_outline_rounded
                       : Icons.play_circle_outline_rounded,
-                ),
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: Center(
-              child: TextButton(
-                onPressed: reset,
-                child: Text(
-                  'Reset the timer',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.displayLarge!.color,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
                 ),
               ),
             ),
@@ -122,25 +108,96 @@ class _HomeScreenState extends State<HomeScreen> {
                         top: Radius.circular(50),
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          'Pomodoros',
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.displayLarge!.color,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                        SizedBox(
+                          width: 115,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Pomodoros',
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .color,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                '$totalPomodoros',
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .color,
+                                  fontSize: 60,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          '$totalPomodoros',
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.displayLarge!.color,
-                            fontSize: 60,
-                            fontWeight: FontWeight.w600,
+                        const VerticalDivider(
+                          thickness: 1,
+                          indent: 20,
+                          endIndent: 20,
+                          color: Color(
+                            0xff4b2238,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 115,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: reset,
+                                child: Text(
+                                  'Reset',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 50,
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Color(
+                                    0xff4b2238,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Settings()),
+                                  );
+                                },
+                                child: Text(
+                                  'Settings',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
