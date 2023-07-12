@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,6 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isRunning = false;
     });
+  }
+
+  void settings() {
+    var time = 25;
+
+    showMaterialNumberPicker(
+      context: context,
+      title: 'Pick Your Age',
+      maxNumber: 100,
+      minNumber: 14,
+      selectedNumber: time,
+      onChanged: (value) => setState(() => time = value),
+    );
   }
 
   String format(int seconds) {
