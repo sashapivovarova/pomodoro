@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:pomodoro/screens/settings.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -16,6 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isRunning = false;
   bool isPushed = false;
   int totalPomodoros = 0;
+  int goalPomodoros = 4;
   late Timer timer;
 
   void onTick(Timer timer) {
@@ -54,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void reset() {
     timer.cancel();
+    Navigator.pop(context, 'OK');
     setState(() {
       isRunning = false;
       totalPomodoros = 0;
@@ -81,19 +81,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          IconButton(
+            iconSize: 120,
+            color: Theme.of(context).cardColor,
+            onPressed: isRunning ? onPausePressed : onStartPressed,
+            icon: Icon(
+              isRunning
+                  ? Icons.pause_circle_outline_rounded
+                  : Icons.play_circle_outline_rounded,
+            ),
+          ),
           Flexible(
             flex: 1,
-            child: Center(
-              child: IconButton(
-                iconSize: 120,
-                color: Theme.of(context).cardColor,
-                onPressed: isRunning ? onPausePressed : onStartPressed,
-                icon: Icon(
-                  isRunning
-                      ? Icons.pause_circle_outline_rounded
-                      : Icons.play_circle_outline_rounded,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$totalPomodoros / ',
+                      style: TextStyle(
+                        color: Theme.of(context).cardColor,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '$goalPomodoros',
+                      style: TextStyle(
+                        color: Theme.of(context).cardColor,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
           ),
           Flexible(
@@ -116,26 +140,79 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                'Pomodoros',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge!
-                                      .color,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
+                              TextButton(
+                                onPressed: () => showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text(
+                                      '',
+                                    ),
+                                    content: Text(
+                                      'Are you sure to reset the timer?',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge!
+                                            .color,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Cancel'),
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .displayLarge!
+                                                .color,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          reset();
+                                        },
+                                        child: Text(
+                                          'OK',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .displayLarge!
+                                                .color,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    backgroundColor:
+                                        Theme.of(context).cardColor,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          30,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '$totalPomodoros',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge!
-                                      .color,
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.w600,
+                                child: Text(
+                                  'Reset',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
@@ -155,36 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
-                                onPressed: reset,
-                                child: Text(
-                                  'Reset',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .color,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 50,
-                                child: Divider(
-                                  thickness: 1,
-                                  color: Color(
-                                    0xff4b2238,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const Settings()),
-                                  );
-                                },
+                                onPressed: () {},
                                 child: Text(
                                   'Settings',
                                   style: TextStyle(
