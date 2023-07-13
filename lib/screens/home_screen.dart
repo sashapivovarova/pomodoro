@@ -10,12 +10,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const twentyFiveMinuates = 1500;
+  static const twentyFiveMinuates = 10;
   int totalSeconds = twentyFiveMinuates;
   bool isRunning = false;
   bool isPushed = false;
   int totalPomodoros = 0;
-  int goalPomodoros = 4;
+
   late Timer timer;
 
   void onTick(Timer timer) {
@@ -47,19 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void settings() {
-    var time = 25;
-
-    showMaterialNumberPicker(
-      context: context,
-      title: 'Pick Your Age',
-      maxNumber: 100,
-      minNumber: 14,
-      selectedNumber: time,
-      onChanged: (value) => setState(() => time = value),
-    );
-  }
-
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
     return duration.toString().split('.').first.substring(2, 7);
@@ -72,6 +59,22 @@ class _HomeScreenState extends State<HomeScreen> {
       isRunning = false;
       totalPomodoros = 0;
       totalSeconds = twentyFiveMinuates;
+    });
+  }
+
+  void picker() {
+    int time = 25;
+
+    showMaterialNumberPicker(
+      context: context,
+      title: 'Pick Time',
+      maxNumber: 60,
+      minNumber: 5,
+      selectedNumber: time,
+      onChanged: (value) => setState(() => time = value),
+    );
+    setState(() {
+      totalSeconds = time * 60;
     });
   }
 
@@ -114,15 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '$totalPomodoros / ',
-                      style: TextStyle(
-                        color: Theme.of(context).cardColor,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      '$goalPomodoros',
+                      'Today $totalPomodoros',
                       style: TextStyle(
                         color: Theme.of(context).cardColor,
                         fontSize: 30,
@@ -246,7 +241,69 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    backgroundColor:
+                                        Theme.of(context).cardColor,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(50),
+                                      ),
+                                    ),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  TextButton(
+                                                    child: Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .displayLarge!
+                                                            .color,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                  ),
+                                                  TextButton(
+                                                    child: Text(
+                                                      'OK',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .displayLarge!
+                                                            .color,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                                 child: Text(
                                   'Settings',
                                   style: TextStyle(
