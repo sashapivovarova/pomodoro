@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,8 +16,62 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isRunning = false;
   bool isPushed = false;
   int totalPomodoros = 0;
-
+  late SharedPreferences prefs;
+  late int count;
   late Timer timer;
+
+  Future settings() async {
+    await showModalBottomSheet(
+      backgroundColor: Theme.of(context).cardColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(50),
+        ),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).textTheme.displayLarge!.color,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).textTheme.displayLarge!.color,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void onTick(Timer timer) {
     if (totalSeconds == 0) {
@@ -76,6 +131,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       totalSeconds = time * 60;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -241,69 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    backgroundColor:
-                                        Theme.of(context).cardColor,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(50),
-                                      ),
-                                    ),
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  TextButton(
-                                                    child: Text(
-                                                      'Cancel',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .textTheme
-                                                            .displayLarge!
-                                                            .color,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                  ),
-                                                  TextButton(
-                                                    child: Text(
-                                                      'OK',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .textTheme
-                                                            .displayLarge!
-                                                            .color,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
+                                onPressed: settings,
                                 child: Text(
                                   'Settings',
                                   style: TextStyle(
