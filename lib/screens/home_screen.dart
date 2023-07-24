@@ -38,14 +38,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
+                      children: [
                         SizedBox(
-                          width: 130.0,
+                          width: 200.0,
                           child: ElevatedButton(
-                            child: const Text('Timer Setting'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xfff88987),
+                            ),
+                            child: const Text(
+                              'Timer Setting',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             onPressed: () => showMaterialNumberPicker(
+                              headerColor: const Color(0xfff88987),
+                              headerTextColor: Colors.white,
+                              backgroundColor: const Color(0xfff4eddb),
+                              buttonTextColor: const Color(0xff4b2238),
                               context: context,
-                              title: 'Pick Your Time',
+                              title: 'Set Your Timer',
                               maxNumber: 60,
                               minNumber: 5,
                               selectedNumber: time,
