@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,13 +10,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const twentyFiveMinuates = 10;
-  int totalSeconds = twentyFiveMinuates;
+  static const twentyFiveMinutes = 10;
+  int totalSeconds = twentyFiveMinutes;
   bool isRunning = false;
   bool isPushed = false;
   int totalPomodoros = 0;
-  late SharedPreferences prefs;
-  late int count;
+  int time = 25;
   late Timer timer;
 
   Future settings() async {
@@ -36,8 +34,29 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Column(
-                  children: [],
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 130.0,
+                          child: ElevatedButton(
+                            child: const Text('Timer Setting'),
+                            onPressed: () => showMaterialNumberPicker(
+                              context: context,
+                              title: 'Pick Your Time',
+                              maxNumber: 60,
+                              minNumber: 5,
+                              selectedNumber: time,
+                              onChanged: (value) =>
+                                  setState(() => time = value),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         totalPomodoros = totalPomodoros + 1;
         isRunning = false;
-        totalSeconds = twentyFiveMinuates;
+        totalSeconds = twentyFiveMinutes;
       });
       timer.cancel();
     } else {
@@ -116,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isRunning = false;
       totalPomodoros = 0;
-      totalSeconds = twentyFiveMinuates;
+      totalSeconds = twentyFiveMinutes;
     });
   }
 
