@@ -10,111 +10,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const twentyFiveMinutes = 10;
-  int totalSeconds = twentyFiveMinutes;
+  static const initialTime = 10;
+  int totalSeconds = initialTime;
   bool isRunning = false;
   bool isPushed = false;
   int totalPomodoros = 0;
   int time = 25;
   late Timer timer;
 
-  Future settings() async {
-    await showModalBottomSheet(
-      backgroundColor: Theme.of(context).cardColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(50),
-        ),
-      ),
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 200.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xfff88987),
-                            ),
-                            child: const Text(
-                              'Timer Setting',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            onPressed: () => showMaterialNumberPicker(
-                              headerColor: const Color(0xfff88987),
-                              headerTextColor: Colors.white,
-                              backgroundColor: const Color(0xfff4eddb),
-                              buttonTextColor: const Color(0xff4b2238),
-                              context: context,
-                              title: 'Set Your Timer',
-                              maxNumber: 60,
-                              minNumber: 5,
-                              selectedNumber: time,
-                              onChanged: (value) =>
-                                  setState(() => time = value),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color:
-                              Theme.of(context).textTheme.displayLarge!.color,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    TextButton(
-                      child: Text(
-                        'OK',
-                        style: TextStyle(
-                          color:
-                              Theme.of(context).textTheme.displayLarge!.color,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void onTick(Timer timer) {
     if (totalSeconds == 0) {
       setState(() {
         totalPomodoros = totalPomodoros + 1;
         isRunning = false;
-        totalSeconds = twentyFiveMinutes;
+        totalSeconds = initialTime;
       });
       timer.cancel();
     } else {
@@ -122,6 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
         totalSeconds = totalSeconds - 1;
       });
     }
+  }
+
+  void setTime() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+      totalSeconds = time * 60;
+    });
   }
 
   void onStartPressed() {
@@ -149,23 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isRunning = false;
       totalPomodoros = 0;
-      totalSeconds = twentyFiveMinutes;
-    });
-  }
-
-  void picker() {
-    int time = 25;
-
-    showMaterialNumberPicker(
-      context: context,
-      title: 'Pick Time',
-      maxNumber: 60,
-      minNumber: 5,
-      selectedNumber: time,
-      onChanged: (value) => setState(() => time = value),
-    );
-    setState(() {
-      totalSeconds = time * 60;
+      totalSeconds = initialTime;
     });
   }
 
@@ -337,9 +238,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
-                                onPressed: settings,
+                                onPressed: () => showMaterialNumberPicker(
+                                  headerColor: const Color(0xfff88987),
+                                  headerTextColor: Colors.white,
+                                  backgroundColor: const Color(0xfff4eddb),
+                                  buttonTextColor: const Color(0xff4b2238),
+                                  context: context,
+                                  title: 'Set Your Timer',
+                                  maxNumber: 60,
+                                  minNumber: 5,
+                                  selectedNumber: time,
+                                  onChanged: (value) =>
+                                      setState(() => time = value),
+                                  onConfirmed: setTime,
+                                ),
                                 child: Text(
-                                  'Settings',
+                                  'Setting',
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
