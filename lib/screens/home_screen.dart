@@ -34,11 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void setTime() {
-    timer.cancel();
-    setState(() {
-      isRunning = false;
-      totalSeconds = time * 60;
-    });
+    if (isRunning) {
+      timer.cancel();
+      setState(() {
+        isRunning = false;
+        totalSeconds = time * 60;
+      });
+    } else {
+      setState(() {
+        totalSeconds = time * 60;
+      });
+    }
   }
 
   void onStartPressed() {
@@ -61,13 +67,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void reset() {
-    timer.cancel();
     Navigator.pop(context, 'OK');
-    setState(() {
-      isRunning = false;
-      totalPomodoros = 0;
-      totalSeconds = initialTime;
-    });
+    if (isRunning) {
+      timer.cancel();
+      setState(() {
+        isRunning = false;
+        totalPomodoros = 0;
+        totalSeconds = initialTime;
+      });
+    } else {
+      setState(() {
+        totalPomodoros = 0;
+        totalSeconds = initialTime;
+      });
+    }
   }
 
   @override
@@ -245,8 +258,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   buttonTextColor: const Color(0xff4b2238),
                                   context: context,
                                   title: 'Set Your Timer',
-                                  maxNumber: 60,
+                                  maxNumber: 55,
                                   minNumber: 5,
+                                  step: 5,
                                   selectedNumber: time,
                                   onChanged: (value) =>
                                       setState(() => time = value),
