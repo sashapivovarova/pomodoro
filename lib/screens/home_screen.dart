@@ -126,14 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Today $totalPomodoros',
-                      style: TextStyle(
-                        color: Theme.of(context).cardColor,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    pomodorosText(context),
                   ],
                 ),
               ],
@@ -159,81 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextButton(
-                                onPressed: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text(
-                                      '',
-                                    ),
-                                    content: Text(
-                                      'Are you sure to reset the timer?',
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge!
-                                            .color,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Cancel'),
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .displayLarge!
-                                                .color,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          reset();
-                                        },
-                                        child: Text(
-                                          'OK',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .displayLarge!
-                                                .color,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    backgroundColor:
-                                        Theme.of(context).cardColor,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          30,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Reset',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .color,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                              resetButton(context),
                             ],
                           ),
                         ),
@@ -250,34 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextButton(
-                                onPressed: () => showMaterialNumberPicker(
-                                  headerColor: const Color(0xfff88987),
-                                  headerTextColor: Colors.white,
-                                  backgroundColor: const Color(0xfff4eddb),
-                                  buttonTextColor: const Color(0xff4b2238),
-                                  context: context,
-                                  title: 'Set Your Timer',
-                                  maxNumber: 55,
-                                  minNumber: 5,
-                                  step: 5,
-                                  selectedNumber: time,
-                                  onChanged: (value) =>
-                                      setState(() => time = value),
-                                  onConfirmed: setTime,
-                                ),
-                                child: Text(
-                                  'Setting',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .color,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                              settingButton(context),
                             ],
                           ),
                         ),
@@ -289,6 +181,107 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Text pomodorosText(BuildContext context) {
+    return Text(
+      'Pomodoros $totalPomodoros',
+      style: TextStyle(
+        color: Theme.of(context).cardColor,
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  TextButton resetButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text(
+            '',
+          ),
+          content: Text(
+            'Are you sure to reset the timer?',
+            style: TextStyle(
+              color: Theme.of(context).textTheme.displayLarge!.color,
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.displayLarge!.color,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                reset();
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.displayLarge!.color,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+          backgroundColor: Theme.of(context).cardColor,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                30,
+              ),
+            ),
+          ),
+        ),
+      ),
+      child: Text(
+        'Reset',
+        style: TextStyle(
+          color: Theme.of(context).textTheme.displayLarge!.color,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  TextButton settingButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => showMaterialNumberPicker(
+        headerColor: const Color(0xfff88987),
+        headerTextColor: Colors.white,
+        backgroundColor: const Color(0xfff4eddb),
+        buttonTextColor: const Color(0xff4b2238),
+        context: context,
+        title: 'Set Your Timer',
+        maxNumber: 55,
+        minNumber: 5,
+        step: 5,
+        selectedNumber: time,
+        onChanged: (value) => setState(() => time = value),
+        onConfirmed: setTime,
+      ),
+      child: Text(
+        'Setting',
+        style: TextStyle(
+          color: Theme.of(context).textTheme.displayLarge!.color,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
