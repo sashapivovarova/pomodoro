@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Text pomodorosText(BuildContext context) {
     return Text(
-      'Pomodoros $totalPomodoros',
+      'Today $totalPomodoros',
       style: TextStyle(
         color: Theme.of(context).cardColor,
         fontSize: 30,
