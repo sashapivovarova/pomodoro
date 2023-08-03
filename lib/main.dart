@@ -19,16 +19,14 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-          backgroundColor: const Color(0xfff88987),
+          backgroundColor: const Color(0xffe64d3d),
         ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
-            color: Color(0xff4b2238),
+            color: Color(0xffe64d3d),
           ),
         ),
-        cardColor: const Color(
-          0xfff4eddb,
-        ),
+        cardColor: Colors.white,
       ),
       home: const HomeScreen(),
     );
