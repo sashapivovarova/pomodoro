@@ -9,7 +9,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const initialTime = 5;
+  static const initialTime = 1500;
   static const breakTime = 300;
   int selectedTime = 25;
   int totalSeconds = initialTime;
@@ -85,6 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String format1(int seconds) {
     var duration = Duration(seconds: seconds);
+    print(duration);
+    print(duration.toString());
+    // print(duration) 
+
     return duration.toString().split('.').first.substring(2, 4);
   }
 
@@ -127,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'POMOTIMER',
+              'POMODORO',
               style: TextStyle(
                 fontSize: 25,
                 color: Colors.white,
@@ -201,6 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 200,
                 child: Row(
                   children: [
+                    const SizedBox(
+                      width: 20,
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -332,6 +339,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      width: 20,
                     ),
                   ],
                 ),
