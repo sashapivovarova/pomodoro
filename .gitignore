@@ -42,3 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android Studio will place the keystore file here
+/android/key.properties
+upload-keystore.jks
+upload_certificate.pem
